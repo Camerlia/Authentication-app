@@ -1,6 +1,5 @@
 import { User } from "../models/user.module.js";
 import bcryptjs from "bcryptjs";
-import { generateVerificationCode } from "../utils/generateVerificationCode.js";
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookies.js";
 import {
   sendPasswordResetEmail,

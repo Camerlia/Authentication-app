@@ -1,18 +1,30 @@
 import { motion } from "framer-motion";
 import Input from "../components/Input";
 import { useState } from "react";
-import { Lock, Mail, User } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Loader, Lock, Mail, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
+import { useAuthStore } from "../stores/authStore";
+
 
 const SignUpPage = () => {
-  function handleSubmit(e) {
-    e.preventDefault();
-  }
+ 
 
+  const navigate = useNavigate
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { signup, error, isLoading } = useAuthStore()
+
+ async function handleSubmit(e) {
+    e.preventDefault();
+    try{
+      await signup(email, password, name)
+      navigate("/verify-email")
+    }catch(error){
+      console.log(error)
+    }
+  }
   return (
     <motion.div
       className='max-w-md w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl 
@@ -48,6 +60,7 @@ const SignUpPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {error && <p className='text-red-500 font-semibold mt-2'>{error}</p>}
           <PasswordStrengthMeter password={password} />
           <motion.button
             className='mt-5 w-full py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white 
@@ -58,7 +71,7 @@ const SignUpPage = () => {
 						whileTap={{ scale: 0.98 }}
             type="submit"
           >
-            Sign Up
+            {isLoading ? <Loader className=' animate-spin mx-auto' size={24} /> : "Sign Up"}
           </motion.button>
         </form>
       </div>

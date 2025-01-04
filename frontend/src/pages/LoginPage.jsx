@@ -34,7 +34,7 @@ const LoginPage = () => {
           <Input
             icon={Lock}
             value={password}
-            placeholder="Email Address"
+            placeholder="Password"
             type="text"
             onChange={(e) => setPassword(e.target.value)}
           />

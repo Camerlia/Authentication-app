@@ -3,6 +3,7 @@ import { FloatingShpe } from "./components/FloatingShpe"
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage"
 import VerifyEmail from "./pages/VerifyEmail";
+import { Toaster } from "react-hot-toast";
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
+      <Toaster />
     </div>
   )
 }

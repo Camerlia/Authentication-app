@@ -1,16 +1,20 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Input from "../components/Input";
-import { Lock, Mail } from "lucide-react";
+import { Loader, Lock, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../stores/authStore";
 
 const LoginPage = () => {
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 
-  function handleSubmit(e) {
-    e.preventDefault();
-  }
+	const { login, isLoading, error } = useAuthStore();
+
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		await login(email, password);
+	};
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -22,13 +26,13 @@ const LoginPage = () => {
         <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text">
           Welcome Back
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogin}>
           <Input
             icon={Mail}
-            value={user}
+            value={email}
             placeholder="Email Address"
             type="email"
-            onChange={(e) => setUser(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <Input
@@ -43,6 +47,7 @@ const LoginPage = () => {
 							Forgot password?
 						</Link>
 					</div>
+          {error && <p className='text-red-500 font-semibold text-sm mb-2'>{error}</p>}
           <motion.button
             className="mt-5 w-full py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white 
 						font-bold rounded-lg shadow-lg hover:from-cyan-600
@@ -52,7 +57,7 @@ const LoginPage = () => {
             whileTap={{ scale: 0.98 }}
             type="submit"
           >
-            Sign Up
+            {isLoading ? <Loader className='w-6 h-6 animate-spin  mx-auto' /> : "Login"}
           </motion.button>
         </form>
       </div>
